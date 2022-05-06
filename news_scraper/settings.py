@@ -80,7 +80,7 @@ DATABASES = {
         'NAME': 'news',
         'HOST': 'nammmx.mysql.pythonanywhere-services.com',
         'PORT': '3306',
-        'USER': 'nam',
+        'USER': 'nammmx',
         'PASSWORD': 'Ilovemybabyiris094.',
     }
 }
