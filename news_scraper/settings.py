@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'news_scraper.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'news',
+        'NAME': 'nammmx$news',
         'HOST': 'nammmx.mysql.pythonanywhere-services.com',
         'PORT': '3306',
         'USER': 'nammmx',
