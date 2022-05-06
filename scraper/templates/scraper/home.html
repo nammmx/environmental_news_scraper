@@ -1,0 +1,219 @@
+<html>
+<head>
+  <meta name="viewport" content="width=devie-width, initial-scale=1.0">
+  <title>Environmental News</title>
+  <script>
+
+    window.setTimeout(function () {
+      location.href = "";}, 1800000); // refresh page after x seconds.
+    window.onload = () => {
+      document.querySelectorAll(".showmore").forEach(function (p) {
+        p.querySelector("a").addEventListener("click", function () {
+          p.classList.toggle("show");
+          this.textContent = p.classList.contains("show") ? "Read Less" : "Read More";
+        });
+      });
+    }
+  </script>
+  <style>
+  .wrapper {
+  font-family: Verdana, sans-serif;
+  line-height: 1.6;
+  animation: scroll 210s linear infinite;
+  color: whitesmoke;
+  background-image: url("https://images.unsplash.com/photo-1581084324492-c8076f130f86?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"); 
+  }
+  .box {
+    transition-property: box-shadow, transform;
+    transition-duration: 0.5s;
+    max-width: 700px; 
+    margin: 10px auto;
+    border: 2px solid rgba(211,211,211,0.4);
+    border-radius: 5px;
+    padding: 10px 20px;
+    background-color: rgba(0, 0, 0, 0.5) ;
+  }
+  .title {
+    margin: 75px auto;
+    font-size: 25px;
+  }
+  .filter {
+    text-align: center;
+    margin-bottom: 120px;
+  }
+  .filter form {
+    display: block;
+  }
+  .filter form input{
+    margin: auto 10px;
+    padding: 6px;
+    background-color: rgba(0, 0, 0, 0.5) ;
+    border: 1.5px solid rgba(211,211,211,0.4);
+    border-radius: 3px;
+    width: 150px;
+    height: 50px;
+    color: whitesmoke;
+    font-weight: bold;
+    font-size: 15px;
+  }
+  .filter form select{
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.5) ;
+    border: 1.5px solid rgba(211,211,211,0.4);
+    width: 200px;
+    height: 50px;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 16px;
+  }
+  select option {
+  background: rgba(0, 0, 0, 0.9);
+  }
+  .articles_container {
+    margin-bottom: 10px;
+  }
+  
+  .box:hover {
+    /* box-shadow: 2px 2px 5px #8080807a; */
+    box-shadow: 1px 2px 6px 0px black;
+    transform: translateY(-1px);
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  h1 {
+    text-align: center;
+  }
+  a {
+    text-decoration: none;
+    color: black;
+  }
+  .date {
+    font-size: small;
+    font-style: italic;
+    color: lightgray;
+  }
+  .source {
+    color: whitesmoke;
+
+  }
+  .source_1 {
+    color: #0dc08a;
+    font-style: italic;
+  }
+  #summary {
+  font-weight: bold;
+  margin-bottom: 5px;
+  }
+
+  .readmore_article {
+    display: inline-block;
+    margin-top: 5px;
+    padding: 7px;
+    border: 1px solid #0dc08a;
+    color: #0dc08a;
+  }
+
+  .showmore {
+    margin-top: 0;
+  }
+
+  .showmore .more, .showmore.show .dots {
+  display: none;
+  }
+
+  .showmore.show .more {
+    display: inline;
+  }
+  .showmore a {
+  font-style: italic;
+  text-decoration: underline;
+  color: whitesmoke;
+  cursor: pointer;
+  }
+  @media screen and (max-width: 768px) {
+    .title {
+    margin: 30px auto 60px auto;
+    font-size: 22px;
+    }
+    .filter {
+      margin-bottom: 20px;
+    }
+    .box {
+      max-width: 100%;
+    }
+    .filter form input{
+      width: 33%;
+      height: 50px;
+      margin-right: 0;
+    }
+    .filter form select{
+      width: 63%;
+      height: 50px;
+    }
+    .headline {
+      font-size: 22px;
+    }
+    .readmore_article {
+    padding: 10px;
+    }
+  }
+
+
+@keyframes scroll {
+  100%{
+  /*background-position:-3000px 0px;*/
+  background-position: 0px -3000px;
+  }
+}
+
+@media (prefers-reduced-motion) {
+  .wrapper {
+    animation: scroll 200s linear infinite;
+  }
+}
+  </style>
+</head>
+
+<body class="wrapper">
+  <div class="title">
+    <h1>Environmental News</h1>
+  </div>
+  <div class="filter">
+    <form class="filter1" method="get">
+      <select name="source" class="source">
+        <option value="">Sources</option>
+        <option value="">All</option>
+        <option value="bbc">BBC</option>
+        <option value="Guardian">Guardian</option>
+        <option value="Reuters">Reuters</option>
+        <input type="submit" value="Apply Filter" />
+      </select>
+    </form>
+  </div>
+  {% for items in filter.qs %}
+  <div class="articles_container">
+    <div class="box">
+      <ul>
+        <li>
+          <h4 class="source_1">{{items.source}}</h4>
+          <h2 class="headline">{{items.headline}}</h2>
+          <p id="summary">Summary:</p>
+          <p class="showmore">{{items.summary|truncatechars:"500"}} <span class="more"> {{items.summary|slice:"499:"}} </span>
+            <a>Read More</a>
+          </p>
+          <!--<p class="content">{{items.content|truncatewords:"50"|linebreaks}}</p>-->
+          <p class="date">{{items.date}}</p>
+          <a class="readmore_article" href={{items.link}} target="_blank">Read whole article</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  {% endfor %}
+</body>
+
+<!------------------------------------------------------------------------CSS--------------------------------------------------------------------------->
+
+
+</html>
