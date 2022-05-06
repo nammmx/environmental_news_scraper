@@ -78,9 +78,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'news',
-        'HOST': '127.0.0.1',
+        'HOST': 'nammmx.mysql.pythonanywhere-services.com',
         'PORT': '3306',
-        'USER': 'nam',
+        'USER': 'nammmx',
         'PASSWORD': 'Ilovemybabyiris094.',
     }
 }
