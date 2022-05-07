@@ -1,7 +1,7 @@
 import os
 import django
 import sys
-sys.path.append("C:/Users/Nam/Desktop/All/projects/python projects/news_scraper/news_scraper/")
+sys.path.append("/home/nammmx/environmental_news_scraper/")
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'news_scraper.settings')
 django.setup()
 from scraper.models import News
