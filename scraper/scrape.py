@@ -23,10 +23,10 @@ soup_guardian = BeautifulSoup(source_guardian, "lxml")
 
 #todays date - guardian
 date_guardian = now.strftime("%#d-%B-%Y").lower()
-
+print(date_guardian)
 print("---------- GUARDIAN ----------")
 section_guardian = soup_guardian.find("section", {"id": date_guardian})
-
+print(section_guardian)
 
 for article in section_guardian.find_all("a", class_="u-faux-block-link__overlay js-headline-text"):
  #title
