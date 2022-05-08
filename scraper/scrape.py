@@ -22,7 +22,7 @@ source_guardian = requests.get("https://www.theguardian.com/environment/all").te
 soup_guardian = BeautifulSoup(source_guardian, "lxml")
 
 #todays date - guardian
-date_guardian = now.strftime("%#d-%B-%Y").lower()
+date_guardian = now.strftime("%-d-%B-%Y").lower()
 
 print("---------- GUARDIAN ----------")
 section_guardian = soup_guardian.find("section", {"id": date_guardian})
