@@ -27,53 +27,50 @@ date_guardian = now.strftime("%-d-%B-%Y").lower()
 print("---------- GUARDIAN ----------")
 section_guardian = soup_guardian.find("section", {"id": date_guardian})
 
-try:
-  for article in section_guardian.find_all("a", class_="u-faux-block-link__overlay js-headline-text"):
-    try:
-      #title
-      title_guardian = article.text
-      #link
-      href_guardian = article.get("href")
-      #scrape each article
-      source_articles_guardian = requests.get(href_guardian).text
-      soup_article_guardian = BeautifulSoup(source_articles_guardian, "lxml")
-      contents_guardian = soup_article_guardian.find("div", { "id" : "maincontent" })
-      words_guardian = []
-      for p in contents_guardian.find_all("p"):
-        words_guardian.append(p.text)
-      final_content_guardian = " ".join(map(str, words_guardian))
-      
-      #identify eos's
-      final_content_guardian = final_content_guardian.replace('.', '.<eos>')
-      final_content_guardian = final_content_guardian.replace('?', '?<eos>')
-      final_content_guardian = final_content_guardian.replace('!', '!<eos>')
 
-      #create chunks of sentences
-      sentences_guardian = final_content_guardian.split('<eos>')
-      current_chunk_guardian = 0 
-      chunks_guardian = []
-      for sentence_guardian in sentences_guardian:
-          if len(chunks_guardian) == current_chunk_guardian + 1: 
-              if len(chunks_guardian[current_chunk_guardian]) + len(sentence_guardian.split(' ')) <= max_chunk:
-                  chunks_guardian[current_chunk_guardian].extend(sentence_guardian.split(' '))
-              else:
-                  current_chunk_guardian += 1
-                  chunks_guardian.append(sentence_guardian.split(' '))
+for article in section_guardian.find_all("a", class_="u-faux-block-link__overlay js-headline-text"):
+
+  #title
+  title_guardian = article.text
+  #link
+  href_guardian = article.get("href")
+  #scrape each article
+  source_articles_guardian = requests.get(href_guardian).text
+  soup_article_guardian = BeautifulSoup(source_articles_guardian, "lxml")
+  contents_guardian = soup_article_guardian.find("div", { "id" : "maincontent" })
+  words_guardian = []
+  for p in contents_guardian.find_all("p"):
+    words_guardian.append(p.text)
+  final_content_guardian = " ".join(map(str, words_guardian))
+
+  #identify eos's
+  final_content_guardian = final_content_guardian.replace('.', '.<eos>')
+  final_content_guardian = final_content_guardian.replace('?', '?<eos>')
+  final_content_guardian = final_content_guardian.replace('!', '!<eos>')
+
+  #create chunks of sentences
+  sentences_guardian = final_content_guardian.split('<eos>')
+  current_chunk_guardian = 0 
+  chunks_guardian = []
+  for sentence_guardian in sentences_guardian:
+      if len(chunks_guardian) == current_chunk_guardian + 1: 
+          if len(chunks_guardian[current_chunk_guardian]) + len(sentence_guardian.split(' ')) <= max_chunk:
+              chunks_guardian[current_chunk_guardian].extend(sentence_guardian.split(' '))
           else:
+              current_chunk_guardian += 1
               chunks_guardian.append(sentence_guardian.split(' '))
-      for chunk_id_guardian in range(len(chunks_guardian)):
-          chunks_guardian[chunk_id_guardian] = ' '.join(chunks_guardian[chunk_id_guardian])
-      
-      #summarize chunks
-      summary_guardian = summarizer(chunks_guardian, max_length=75, min_length=30, do_sample=False)
-      summary_guardian_text = ' '.join([summ['summary_text'] for summ in summary_guardian])
-      
-      #insert into database
-      News.objects.update_or_create(source="Guardian", headline=title_guardian, link=href_guardian, content=final_content_guardian, summary=summary_guardian_text)
-    except Exception as e:
-      pass
-except Exception as e:
-  pass
+      else:
+          chunks_guardian.append(sentence_guardian.split(' '))
+  for chunk_id_guardian in range(len(chunks_guardian)):
+      chunks_guardian[chunk_id_guardian] = ' '.join(chunks_guardian[chunk_id_guardian])
+
+  #summarize chunks
+  summary_guardian = summarizer(chunks_guardian, max_length=75, min_length=30, do_sample=False)
+  summary_guardian_text = ' '.join([summ['summary_text'] for summ in summary_guardian])
+
+  #insert into database
+  News.objects.update_or_create(source="Guardian", headline=title_guardian, link=href_guardian, content=final_content_guardian, summary=summary_guardian_text)
+
 
 
 ########################################### BBC ##################################################
