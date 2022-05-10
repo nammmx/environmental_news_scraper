@@ -69,7 +69,7 @@ try:
       summary_guardian_text = ' '.join([summ['summary_text'] for summ in summary_guardian])
       
       #insert into database
-      News.objects.update_or_create(source="Guardian", headline=title_guardian, link=href_guardian, content=final_content_guardian, summary=summary_guardian_text)
+      News.objects.update_or_create(source="Guardian", headline=title_guardian, link=href_guardian, content=final_content_guardian, defaults={"summary":summary_guardian_text})
     except Exception as e:
       pass
 except Exception as e:
@@ -122,7 +122,7 @@ try:
         summary_bbc = summarizer(chunks_bbc, max_length=75, min_length=30, do_sample=False)
         summary_bbc_text = ' '.join([summ['summary_text'] for summ in summary_bbc])
         #insert in database
-        News.objects.update_or_create(source="bbc", headline=title_bbc, link=href_bbc, content=final_content_bbc, summary=summary_bbc_text) 
+        News.objects.update_or_create(source="bbc", headline=title_bbc, link=href_bbc, content=final_content_bbc, defaults={"summary":summary_bbc_text}) 
     except Exception as e:
       pass
 except Exception as e:
@@ -174,6 +174,6 @@ try:
         summary_reuters = summarizer(chunks_reuters, max_length=75, min_length=30, do_sample=False)
         summary_reuters_text = ' '.join([summ['summary_text'] for summ in summary_reuters])
         #insert in database
-        News.objects.update_or_create(source="Reuters", headline=title_reuters, link=href_reuters, content=final_content_reuters, summary=summary_reuters_text)
+        News.objects.update_or_create(source="Reuters", headline=title_reuters, link=href_reuters, content=final_content_reuters, defaults={"summary":summary_reuters_text})
 except Exception as e:
   pass
